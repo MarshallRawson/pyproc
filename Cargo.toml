@@ -9,7 +9,6 @@ edition = "2021"
 subprocess = "0.2.9"
 libc = "0.2"
 fork = "0.1.23"
-pipe = "0.4.0"
 
 [build-dependencies]
 pkg-config = "0.3.29"

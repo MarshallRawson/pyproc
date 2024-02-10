@@ -3,21 +3,6 @@
 version = 3
 
 [[package]]
-name = "crossbeam-channel"
-version = "0.5.11"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "176dc175b78f56c0f321911d9c8eb2b77a78a4860b9c19db83835fea1a46649b"
-dependencies = [
- "crossbeam-utils",
-]
-
-[[package]]
-name = "crossbeam-utils"
-version = "0.8.19"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "248e3bacc7dc6baa3b21e405ee045c3047101a49145e7e9eca583ab4c2ca5345"
-
-[[package]]
 name = "fork"
 version = "0.1.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -33,15 +18,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9c198f91728a82281a64e1f4f9eeb25d82cb32a5de251c6bd1b5154d63a8e7bd"
 
 [[package]]
-name = "pipe"
-version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1c7b8f27da217eb966df4c58d4159ea939431950ca03cf782c22bd7c5c1d8d75"
-dependencies = [
- "crossbeam-channel",
-]
-
-[[package]]
 name = "pkg-config"
 version = "0.3.29"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -53,7 +29,6 @@ version = "0.1.0"
 dependencies = [
  "fork",
  "libc",
- "pipe",
  "pkg-config",
  "subprocess",
 ]
