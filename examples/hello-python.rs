@@ -7,7 +7,7 @@ use libc::{c_char, c_int, FILE, fopen, fclose, pid_t};
 use fork::{fork, Fork};
 use pipe::{PipeReader, PipeWriter};
 
-type PyObjPtr = *const i8;
+type PyObjPtr = *const c_char;
 #[repr(i32)]
 #[derive(Clone, Debug)]
 enum PyGILState {
@@ -38,18 +38,18 @@ fn pydict_new() -> PyObj {
 fn pyrun_string(s: &str, state: &PyState) -> PyObj {
     let cs = CString::new(s).unwrap();
     PyObj::new( unsafe {
-        PyRun_String(cs.as_ptr() as *const i8, PY_FILE_INPUT, state.globals.p, state.locals.p)
+        PyRun_String(cs.as_ptr(), PY_FILE_INPUT, state.globals.p, state.locals.p)
     })
 }
 fn pyrun_file(f: &str, state: &PyState) -> std::io::Result<PyObj> {
     let path = CString::new(f).unwrap();
     let r = CString::new("r").unwrap();
-    let file_ptr = unsafe { fopen(path.as_ptr() as *const i8, r.as_ptr() as *const i8) };
+    let file_ptr = unsafe { fopen(path.as_ptr(), r.as_ptr()) };
     if file_ptr.is_null() {
         return Err(std::io::Error::new(std::io::ErrorKind::NotFound, format!("failed to open {f}")));
     }
     let res = PyObj::new( unsafe {
-        PyRun_File(file_ptr, path.as_ptr() as *const i8, state.globals.p, state.locals.p)
+        PyRun_File(file_ptr, path.as_ptr(), state.globals.p, state.locals.p)
     });
     unsafe { fclose(file_ptr); }
     Ok(res)
@@ -132,7 +132,6 @@ impl PyProc {
             Ok(Fork::Child) => {
                 Self::main(child_read, child_write, files);
                 std::process::exit(0);
-                Err(0)
             },
             Ok(Fork::Parent(child)) => {
                 Ok(Self {read: parent_read, write: parent_write, child: child })
